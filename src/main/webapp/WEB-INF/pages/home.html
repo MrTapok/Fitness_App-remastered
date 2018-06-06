@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-controller="getController">
+<head>
+    <meta charset="UTF-8">
+    <title>Fitness Club</title>
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resources/css/style.css">
+    <script src="/resources/js/angular.min.js"></script>
+    <script src="/resources/js/app.js"></script>
+    <script src="/resources/js/jquery.min.js"></script>
+    <script src="/resources/js/popper.min.js"></script>
+    <script src="/resources/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-color fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Fitness Club</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive" ng-init="getCurrentUser()">
+            <ul class="navbar-nav ml-auto" ng-init="getUsername()">
+                <li class="nav-item active">
+                    <a class="nav-link" href="http://localhost:8080/home">Главная</a>
+                </li>
+                <li class="nav-item active dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Личный кабинет
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" ng-if="username=='anonymousUser'">
+                        <a class="dropdown-item" href="http://localhost:8080/login">Вход</a>
+                        <a class="dropdown-item" href="http://localhost:8080/registration">Регистрация</a>
+                    </div>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" ng-if="user.role=='ROLE_USER'">
+                        <a class="dropdown-item" href="#">{{user.name}}:</a>
+                        <a class="dropdown-item" href="http://localhost:8080/information">Личные данные</a>
+                        <a class="dropdown-item" href="http://localhost:8080/cart">Корзина</a>
+                        <a class="dropdown-item" href="http://localhost:8080/history">История заказов</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="http://localhost:8080/logout">Выход</a>
+                    </div>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" ng-if="user.role=='ROLE_MANAGER'">
+                        <a class="dropdown-item" href="#">{{user.name}}:</a>
+                        <a class="dropdown-item" href="http://localhost:8080/man">Менеджер</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="http://localhost:8080/logout">Выход</a>
+                    </div>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" ng-if="user.role=='ROLE_ADMIN'">
+                        <a class="dropdown-item" href="#">{{user.name}}:</a>
+                        <a class="dropdown-item" href="http://localhost:8080/admin">Админ</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="http://localhost:8080/logout">Выход</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+
+<div class="container">
+
+    <header>
+        <div id="logo">
+            <h1>Fitness Club</h1>
+        </div>
+    </header>
+    <table class="table bg-color2">
+        <thead>
+        <tr>
+
+            <th class="text-center">
+                <a href="http://localhost:8080/home" class="btn btn-default">Все занятия</a>
+            </th>
+            <th class="text-center">
+                <a href="http://localhost:8080/home1" class="btn btn-default">Все абонементы</a>
+            </th>
+        </tr>
+        </thead>
+    </table>
+    <table class="table borderless bg-color3" ng-init="getWorkouts()">
+        <thead>
+        <tr>
+            <th>Название занятия</th>
+            <th>Описание</th>
+            <th>Цена</th>
+            <th>Осталось</th>
+            <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="workout in workouts" ng-controller="postController">
+            <td>{{workout.name}}</td>
+            <td>{{workout.description}}</td>
+            <td>{{workout.price}}</td>
+            <td>{{workout.remain}}</td>
+            <td>{{workout.status}}</td>
+            <td><form ng-if="username!='anonymousUser'" name="post" ng-submit="addWorkoutToUser()">
+                <button type="submit" ng-click="setId(workout.id)"
+                        class="btn btn-primary">Забронировать</button>
+            </form>
+                <form ng-if="username=='anonymousUser'" name="post" ng-submit="goToLogin()">
+                    <button type="submit" class="btn btn-primary">Забронировать</button>
+                </form></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+
+<footer class="py-3 bg-light">
+    <div class="container">
+        <p class="m-0 text-center text-black">324 группа, 2018</p>
+    </div>
+</footer>
+
+</body>
+</html>
